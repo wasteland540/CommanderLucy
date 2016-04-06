@@ -5,6 +5,13 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommanderLucy", "CommanderLucy\CommanderLucy.csproj", "{DE02E6F5-5EE5-424A-83C4-A58686EAECCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommanderLucyPluginInterface", "CommanderLucyPluginInterface\CommanderLucyPluginInterface.csproj", "{68100EC2-2348-4B52-8FD1-3930BA1B60E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCommanderPlugin", "TestCommanderPlugin\TestCommanderPlugin.csproj", "{1E863EBA-2AC5-46B5-B5E7-3BC6EEB65F34}"
+	ProjectSection(ProjectDependencies) = postProject
+		{68100EC2-2348-4B52-8FD1-3930BA1B60E0} = {68100EC2-2348-4B52-8FD1-3930BA1B60E0}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +22,14 @@ Global
 		{DE02E6F5-5EE5-424A-83C4-A58686EAECCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE02E6F5-5EE5-424A-83C4-A58686EAECCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE02E6F5-5EE5-424A-83C4-A58686EAECCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68100EC2-2348-4B52-8FD1-3930BA1B60E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68100EC2-2348-4B52-8FD1-3930BA1B60E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68100EC2-2348-4B52-8FD1-3930BA1B60E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68100EC2-2348-4B52-8FD1-3930BA1B60E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E863EBA-2AC5-46B5-B5E7-3BC6EEB65F34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E863EBA-2AC5-46B5-B5E7-3BC6EEB65F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E863EBA-2AC5-46B5-B5E7-3BC6EEB65F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E863EBA-2AC5-46B5-B5E7-3BC6EEB65F34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
