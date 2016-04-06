@@ -1,0 +1,13 @@
+﻿Assembly assembly = Assembly.LoadFile(@"TestCommanderPlugin.dll");
+foreach (Type type in assembly.GetTypes())
+{
+    if (type.IsClass && type.GetInterfaces().ToList().Contains(typeof(ICommanderPlugin)))
+    {
+        var plugin = Activator.CreateInstance(type) as ICommanderPlugin;
+
+        if (plugin != null)
+        {
+            plugin.Execute(null);
+        }
+    }
+}
