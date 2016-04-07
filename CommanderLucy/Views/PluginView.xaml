@@ -1,8 +1,27 @@
 ﻿<Window x:Class="CommanderLucy.Views.PluginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PluginView" Height="300" Width="300">
+        Title="Plugin Manager" Height="412.363" Width="553.091" MinWidth="553.091" MaxWidth="553.091" MinHeight="412.363">
     <Grid>
+        <GroupBox Header="Add Plugin" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="63" Width="525">
+            <Grid>
+                <Label Content="Path:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.055,0.29"/>
+                <TextBox Text=""  HorizontalAlignment="Left" Height="23" Margin="51,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="372"/>
+                <Button Content="Add" HorizontalAlignment="Left" Margin="428,10,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
+            </Grid>    
+        </GroupBox>
         
+        <Label Content="Plugins:" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top"/>
+        <ListBox HorizontalAlignment="Stretch" Margin="10,127,10,10" VerticalAlignment="Stretch">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Remove Record" Command="{Binding DeletePluginCommand}">
+                        <MenuItem.Icon>
+                            <Image/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
     </Grid>
 </Window>
