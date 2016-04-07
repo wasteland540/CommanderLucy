@@ -4,17 +4,17 @@ using Microsoft.Practices.Unity;
 namespace CommanderLucy.Views
 {
     /// <summary>
-    ///     Interaction logic for MainWindow.xaml
+    ///     Interaction logic for ConfigView.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class ConfigView
     {
-        public MainWindow()
+        public ConfigView()
         {
             InitializeComponent();
         }
 
         [Dependency]
-        public MainWindowViewModel ViewModel
+        public ConfigViewModel ViewModel
         {
             set { DataContext = value; }
         }
