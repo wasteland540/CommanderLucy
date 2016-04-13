@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using CommanderLucy.Commands;
+using CommanderLucy.Messages;
 using CommanderLucy.ViewModels.Base;
 using CommanderLucy.Views;
 using GalaSoft.MvvmLight.Messaging;
@@ -11,10 +12,12 @@ namespace CommanderLucy.ViewModels
     {
         private readonly IMessenger _messenger;
         private ICommand _openPluginManagerCommand;
+        private PluginView _pluginManagerView;
 
         public MainWindowViewModel(IMessenger messenger)
         {
             _messenger = messenger;
+            _messenger.Register<PluginViewClosedMsg>(this, OnPluginViewClosedMsg);
         }
 
         #region Properties
@@ -34,8 +37,16 @@ namespace CommanderLucy.ViewModels
 
         private void OpenPluginManagerView(object obj)
         {
-            var pluginManagerView = Container.Resolve<PluginView>();
-            pluginManagerView.ShowDialog();
+            if (_pluginManagerView == null)
+            {
+                _pluginManagerView = Container.Resolve<PluginView>();
+                _pluginManagerView.ShowDialog();
+            }
+        }
+
+        private void OnPluginViewClosedMsg(PluginViewClosedMsg msg)
+        {
+            _pluginManagerView = null;
         }
 
         #endregion Private Methods

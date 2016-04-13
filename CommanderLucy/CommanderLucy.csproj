@@ -86,7 +86,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Messages\CannotAddPluginMsg.cs" />
+    <Compile Include="Messages\ChoosePluginFileRequestMsg.cs" />
+    <Compile Include="Messages\ChoosePluginFileResponseMsg.cs" />
+    <Compile Include="Messages\DeletePluginSecurityRequestMsg.cs" />
+    <Compile Include="Messages\DeletePluginSecurityResponseMsg.cs" />
     <Compile Include="Messages\OpenPluginManagerView.cs" />
+    <Compile Include="Messages\PluginViewClosedMsg.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
     <Compile Include="ViewModels\PluginViewModel.cs" />
     <Compile Include="Views\PluginView.xaml.cs">

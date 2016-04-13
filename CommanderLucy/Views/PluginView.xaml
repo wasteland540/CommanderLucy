@@ -6,13 +6,14 @@
         <GroupBox Header="Add Plugin" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="63" Width="525">
             <Grid>
                 <Label Content="Path:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.055,0.29"/>
-                <TextBox Text=""  HorizontalAlignment="Left" Height="23" Margin="51,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="372"/>
-                <Button Content="Add" HorizontalAlignment="Left" Margin="428,10,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
+                <TextBox Text="{Binding PluginPath}"  HorizontalAlignment="Left" Height="23" Margin="51,10,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="292"/>
+                <Button Content="..." Command="{Binding ChooseFileCommand}" HorizontalAlignment="Left" Margin="348,10,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
+                <Button Content="Add" Command="{Binding AddPluginCommand}" HorizontalAlignment="Left" Margin="428,10,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
             </Grid>    
         </GroupBox>
         
         <Label Content="Plugins:" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top"/>
-        <ListBox HorizontalAlignment="Stretch" Margin="10,127,10,10" VerticalAlignment="Stretch">
+        <ListBox ItemsSource="{Binding PluginList}" SelectedItem="{Binding SelectedPlugin}" HorizontalAlignment="Stretch" Margin="10,127,10,10" VerticalAlignment="Stretch">
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Remove Record" Command="{Binding DeletePluginCommand}">
