@@ -1,8 +1,33 @@
 ﻿<Window x:Class="CommanderLucy.Views.ConfigView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ConfigView" Height="300" Width="300">
+        xmlns:model="clr-namespace:CommanderLucy.Model"
+        Title="Configuration" Height="255" Width="333" MinHeight="255" MinWidth="333">
     <Grid>
-        
+        <GroupBox Header="Commands" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Stretch">
+            <Grid>
+                <Button Content="New..." Command="{Binding NewCommandCommand}" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="75"/>
+                <Button Content="Edit..." Command="{Binding EditCommandCommand}" HorizontalAlignment="Right" Margin="0,10,90,0" VerticalAlignment="Top" Width="75"/>
+                <Button Content="Delete" Command="{Binding DeleteCommandCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+                <ListBox ItemsSource="{Binding Commands}" SelectedItem="{Binding SelectedCommand}" HorizontalAlignment="Stretch" Margin="10,35,10,10" VerticalAlignment="Stretch">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Remove Command" Command="{Binding DeleteCommandCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="../Resource/remove8bit.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="model:Command">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

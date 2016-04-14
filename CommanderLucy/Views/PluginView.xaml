@@ -16,9 +16,9 @@
         <ListBox ItemsSource="{Binding PluginList}" SelectedItem="{Binding SelectedPlugin}" HorizontalAlignment="Stretch" Margin="10,127,10,10" VerticalAlignment="Stretch">
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Remove Record" Command="{Binding DeletePluginCommand}">
+                    <MenuItem Header="Remove Plugin" Command="{Binding DeletePluginCommand}">
                         <MenuItem.Icon>
-                            <Image/>
+                            <Image Source="../Resource/remove8bit.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </ContextMenu>

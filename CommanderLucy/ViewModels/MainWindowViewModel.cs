@@ -13,11 +13,14 @@ namespace CommanderLucy.ViewModels
         private readonly IMessenger _messenger;
         private ICommand _openPluginManagerCommand;
         private PluginView _pluginManagerView;
+        private ICommand _openConfigManagerCommand;
+        private ConfigView _configManagerView;
 
         public MainWindowViewModel(IMessenger messenger)
         {
             _messenger = messenger;
             _messenger.Register<PluginViewClosedMsg>(this, OnPluginViewClosedMsg);
+            _messenger.Register<ConfigViewClosedMsg>(this, OnConfigViewClosedMsg);
         }
 
         #region Properties
@@ -28,6 +31,15 @@ namespace CommanderLucy.ViewModels
             {
                 _openPluginManagerCommand = _openPluginManagerCommand ?? new DelegateCommand(OpenPluginManagerView);
                 return _openPluginManagerCommand;
+            }
+        }
+
+        public ICommand OpenConfigManagerCommand
+        {
+            get
+            {
+                _openConfigManagerCommand = _openConfigManagerCommand ?? new DelegateCommand(OpenConfigManagerView);
+                return _openConfigManagerCommand;
             }
         }
 
@@ -47,6 +59,20 @@ namespace CommanderLucy.ViewModels
         private void OnPluginViewClosedMsg(PluginViewClosedMsg msg)
         {
             _pluginManagerView = null;
+        }
+
+        private void OpenConfigManagerView(object obj)
+        {
+            if (_configManagerView == null)
+            {
+                _configManagerView = Container.Resolve<ConfigView>();
+                _configManagerView.ShowDialog();
+            }
+        }
+
+        private void OnConfigViewClosedMsg(ConfigViewClosedMsg msg)
+        {
+            _configManagerView = null;
         }
 
         #endregion Private Methods

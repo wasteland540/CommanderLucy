@@ -86,19 +86,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\PluginParameterStringConverter.cs" />
+    <Compile Include="Messages\AddEditCommandViewClosedMsg.cs" />
     <Compile Include="Messages\CannotAddPluginMsg.cs" />
     <Compile Include="Messages\ChoosePluginFileRequestMsg.cs" />
     <Compile Include="Messages\ChoosePluginFileResponseMsg.cs" />
+    <Compile Include="Messages\ConfigViewClosedMsg.cs" />
+    <Compile Include="Messages\DeleteCommandRequestMsg.cs" />
+    <Compile Include="Messages\DeleteCommandResponseMsg.cs" />
     <Compile Include="Messages\DeletePluginSecurityRequestMsg.cs" />
     <Compile Include="Messages\DeletePluginSecurityResponseMsg.cs" />
     <Compile Include="Messages\OpenPluginManagerView.cs" />
     <Compile Include="Messages\PluginViewClosedMsg.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
+    <Compile Include="ViewModels\Config\AddEditCommandViewModel.cs" />
     <Compile Include="ViewModels\PluginViewModel.cs" />
+    <Compile Include="Views\Config\AddEditCommandView.xaml.cs">
+      <DependentUpon>AddEditCommandView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PluginView.xaml.cs">
       <DependentUpon>PluginView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Config\AddEditCommandView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -173,6 +186,9 @@
   <ItemGroup>
     <Resource Include="Resource\config8.png" />
     <Resource Include="Resource\plugin8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\remove8bit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

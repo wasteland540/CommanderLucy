@@ -4,10 +4,17 @@ using System.Xml.Serialization;
 
 namespace CommanderLucy.Model
 {
+    public enum CommandType
+    {
+        Basic,
+        Plugin,
+    }
+
     public class Command
     {
         public string Name { get; set; }
         public string CommandText { get; set; }
+        public CommandType Type { get; set; }
         public string Action { get; set; } //filepath, url, or pluginname...
         public string[] Parameters { get; set; }
 

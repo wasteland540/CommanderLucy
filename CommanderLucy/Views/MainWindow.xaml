@@ -5,7 +5,7 @@
     <Grid>
         <Expander Header="Menu" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Panel.ZIndex="1000">
             <Grid Width="278" Height="62" Background="LightSteelBlue" >
-                <Button Margin="10,10,148,10">
+                <Button Margin="10,10,148,10" Command="{Binding OpenConfigManagerCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="../Resource/config8.png" Height="25"/>
                         <TextBlock Text="Config" VerticalAlignment="Center" HorizontalAlignment="Right"/>

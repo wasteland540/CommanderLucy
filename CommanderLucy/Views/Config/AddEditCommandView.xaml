@@ -1,0 +1,72 @@
+﻿<Window x:Class="CommanderLucy.Views.Config.AddEditCommandView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:model="clr-namespace:CommanderLucy.Model"
+        xmlns:converters="clr-namespace:CommanderLucy.Converters"
+        Title="{Binding Title}" Height="300" Width="310" MinHeight="300" MinWidth="310" MaxHeight="300" MaxWidth="310">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="CommandTypeData"
+                    MethodName="GetValues" 
+                    ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="model:CommandType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="Margin" Value="10,3" />
+            <Setter Property="Padding" Value="10,10" />
+        </Style>
+
+        <converters:PluginParameterStringConverter x:Key="PluginParameterStringConverter" />
+
+        <DataTemplate x:Key="BasicTemplate">
+            <StackPanel Background="White">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding Action}" Height="23" Width="175"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PluginTemplate" DataType="model:Command">
+            <StackPanel Orientation="Vertical" Background="White" >
+                <ComboBox >
+
+                </ComboBox>
+                <Label Content="Parameters:" />
+                <TextBox Text="{Binding Parameters, Converter={StaticResource PluginParameterStringConverter}}" Height="23"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <Style x:Key="SelectableContentStyle" TargetType="{x:Type ContentControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentCommand.Type}" Value="Basic">
+                    <Setter Property="ContentTemplate" Value="{StaticResource BasicTemplate}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentCommand.Type}" Value="Plugin">
+                    <Setter Property="ContentTemplate" Value="{StaticResource PluginTemplate}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Label Content="Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding CurrentCommand.Name}" HorizontalAlignment="Left" Height="23" Margin="107,10,0,0" VerticalAlignment="Top" Width="175"/>
+        <Label Content="Command Text:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding CurrentCommand.CommandText}" TextWrapping="Wrap" HorizontalAlignment="Left" Height="56" Margin="107,41,0,0" VerticalAlignment="Top" Width="175"/>
+        <Label Content="Type:" HorizontalAlignment="Left" Margin="17,102,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="107,102,0,0" VerticalAlignment="Top" Width="175" 
+                  ItemsSource="{Binding Source={StaticResource CommandTypeData}}"
+                  SelectedItem="{Binding CurrentCommand.Type}" />
+
+        <Label Content="Action:" HorizontalAlignment="Left" Margin="17,129,0,0" VerticalAlignment="Top"/>
+        <Button Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"/>
+
+        <ContentControl x:Name="ContentControl" Margin="107,129,10,35" 
+                        Content="{Binding CurrentCommand}"
+                        Style="{StaticResource SelectableContentStyle}" />
+
+    </Grid>
+</Window>
