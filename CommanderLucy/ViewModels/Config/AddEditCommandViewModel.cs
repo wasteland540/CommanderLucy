@@ -1,15 +1,26 @@
 ﻿using System.Windows.Input;
 using CommanderLucy.Commands;
+using CommanderLucy.Messages;
 using CommanderLucy.Model;
+using CommanderLucy.Services;
 using CommanderLucy.ViewModels.Base;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace CommanderLucy.ViewModels.Config
 {
     public class AddEditCommandViewModel : ViewModelBase
     {
+        private readonly IConfigService _configService;
+        private readonly IMessenger _messenger;
         private Command _currentCommand;
-        private string _title;
         private ICommand _saveCommand;
+        private string _title;
+
+        public AddEditCommandViewModel(IMessenger messenger, IConfigService configService)
+        {
+            _messenger = messenger;
+            _configService = configService;
+        }
 
         #region Properties
 
@@ -52,9 +63,21 @@ namespace CommanderLucy.ViewModels.Config
 
         private void Save(object obj)
         {
-            //TODO: implement Save
+            if (!IsEdit)
+            {
+                _configService.AddCommand(_currentCommand);
+            }
+            else
+            {
+                _configService.UpdateCommand(_currentCommand);
+            }
+
+            _messenger.Send(new ConfigUpdatedMsg());
+            _messenger.Send(new CloseAddEditCommandViewMsg());
         }
 
         #endregion Private Methods
+
+        public bool IsEdit { get; set; }
     }
 }

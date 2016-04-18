@@ -18,6 +18,7 @@ namespace CommanderLucy.Views.Config
             InitializeComponent();
 
             _messenger = messenger;
+            _messenger.Register<CloseAddEditCommandViewMsg>(this, OnCloseAddEditCommandViewMsg);
         }
 
         [Dependency]
@@ -29,12 +30,18 @@ namespace CommanderLucy.Views.Config
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-
-            //unregister messages
-            //TODO:_messenger.Unregister<DeleteCommandRequestMsg>(this, OnDeleteCommandRequestMsg);
-
+            
             //send close msg
             _messenger.Send(new AddEditCommandViewClosedMsg());
         }
+
+        #region Private Methods
+
+        private void OnCloseAddEditCommandViewMsg(CloseAddEditCommandViewMsg msg)
+        {
+            Close();
+        }
+
+        #endregion Private Methods
     }
 }

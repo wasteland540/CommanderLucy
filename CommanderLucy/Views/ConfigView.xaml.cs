@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using CommanderLucy.Messages;
+using CommanderLucy.Services;
 using CommanderLucy.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.Unity;
@@ -14,12 +15,14 @@ namespace CommanderLucy.Views
     public partial class ConfigView
     {
         private readonly IMessenger _messenger;
+        private readonly IConfigService _configService;
 
-        public ConfigView(IMessenger messenger)
+        public ConfigView(IMessenger messenger, IConfigService configService)
         {
             InitializeComponent();
 
             _messenger = messenger;
+            _configService = configService;
             _messenger.Register<DeleteCommandRequestMsg>(this, OnDeleteCommandRequestMsg);
         }
 
@@ -42,7 +45,7 @@ namespace CommanderLucy.Views
             _messenger.Unregister<DeleteCommandRequestMsg>(this, OnDeleteCommandRequestMsg);
             
             //Serialize Config
-            Model.Command.Serialize(ConfigViewModel.ConfigFilename, ViewModel.Commands.ToArray());
+            _configService.SaveConfig(ViewModel.Commands.ToList());
 
             //send close msg
             _messenger.Send(new ConfigViewClosedMsg());

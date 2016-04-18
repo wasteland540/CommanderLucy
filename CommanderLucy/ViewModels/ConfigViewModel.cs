@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommanderLucy.Commands;
 using CommanderLucy.Messages;
 using CommanderLucy.Model;
+using CommanderLucy.Services;
 using CommanderLucy.ViewModels.Base;
 using CommanderLucy.ViewModels.Config;
 using CommanderLucy.Views.Config;
@@ -16,22 +14,24 @@ namespace CommanderLucy.ViewModels
 {
     public class ConfigViewModel : ViewModelBase
     {
-        public const string ConfigFilename = "CommandConfig.xml";
+        private readonly IConfigService _configService;
         private readonly IMessenger _messenger;
+        private AddEditCommandView _addEditCommandView;
         private ObservableCollection<Command> _commands;
         private ICommand _deleteCommandCommand;
         private ICommand _editCommandCommand;
         private ICommand _newCommandCommand;
         private Command _selectedCommand;
-        private AddEditCommandView _addEditCommandView;
 
-        public ConfigViewModel(IMessenger messenger)
+        public ConfigViewModel(IMessenger messenger, IConfigService configService)
         {
             _messenger = messenger;
+            _configService = configService;
             _messenger.Register<DeleteCommandResponseMsg>(this, OnDeleteCommandResponseMsg);
             _messenger.Register<AddEditCommandViewClosedMsg>(this, OnAddEditCommandViewClosedMsg);
+            _messenger.Register<ConfigUpdatedMsg>(this, OnConfigUpdatedMsg);
         }
-        
+
         #region Properties
 
         public ICommand DeleteCommandCommand
@@ -63,31 +63,7 @@ namespace CommanderLucy.ViewModels
 
         public ObservableCollection<Command> Commands
         {
-            get
-            {
-                if (_commands == null)
-                {
-                    if (File.Exists(ConfigFilename))
-                    {
-                        _commands = new ObservableCollection<Command>(Command.Deserialize(ConfigFilename).ToList());
-                    }
-                    else
-                    {
-                        _commands = new ObservableCollection<Command>
-                        {
-                            new Command
-                            {
-                                Name = "Hello Master",
-                                CommandText = "Hello",
-                                Type = CommandType.Basic,
-                                Action = "https://github.com/wasteland540/CommanderLucy"
-                            }
-                        };
-                    }
-                }
-
-                return _commands;
-            }
+            get { return _commands ?? (_commands = new ObservableCollection<Command>(_configService.LoadConfig())); }
 
             set
             {
@@ -112,12 +88,11 @@ namespace CommanderLucy.ViewModels
 
         private void NewCommand(object obj)
         {
-            //TODO: implement NewCommand
             if (_addEditCommandView == null)
             {
                 _addEditCommandView = Container.Resolve<AddEditCommandView>();
-                
-                var viewmodel = (AddEditCommandViewModel)_addEditCommandView.DataContext;
+
+                var viewmodel = (AddEditCommandViewModel) _addEditCommandView.DataContext;
                 viewmodel.Title = "Add New Command";
 
                 _addEditCommandView.ShowDialog();
@@ -126,7 +101,6 @@ namespace CommanderLucy.ViewModels
 
         private void EditCommand(object obj)
         {
-            //TODO: implement EditCommand
             if (_selectedCommand != null)
             {
                 if (_addEditCommandView == null)
@@ -135,6 +109,7 @@ namespace CommanderLucy.ViewModels
 
                     var viewmodel = (AddEditCommandViewModel) _addEditCommandView.DataContext;
                     viewmodel.Title = "Edit Command";
+                    viewmodel.IsEdit = true;
                     viewmodel.CurrentCommand = _selectedCommand;
 
                     _addEditCommandView.ShowDialog();
@@ -158,10 +133,15 @@ namespace CommanderLucy.ViewModels
                 Commands = _commands;
             }
         }
-        
+
         private void OnAddEditCommandViewClosedMsg(AddEditCommandViewClosedMsg msg)
         {
             _addEditCommandView = null;
+        }
+
+        private void OnConfigUpdatedMsg(ConfigUpdatedMsg msg)
+        {
+            Commands = new ObservableCollection<Command>(_configService.LoadConfig());
         }
 
         #endregion Private Methods

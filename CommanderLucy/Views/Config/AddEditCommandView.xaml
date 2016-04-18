@@ -53,7 +53,7 @@
 
     <Grid>
         <Label Content="Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox Text="{Binding CurrentCommand.Name}" HorizontalAlignment="Left" Height="23" Margin="107,10,0,0" VerticalAlignment="Top" Width="175"/>
+        <TextBox Text="{Binding CurrentCommand.Name}" IsReadOnly="{Binding IsEdit}" HorizontalAlignment="Left" Height="23" Margin="107,10,0,0" VerticalAlignment="Top" Width="175"/>
         <Label Content="Command Text:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
         <TextBox Text="{Binding CurrentCommand.CommandText}" TextWrapping="Wrap" HorizontalAlignment="Left" Height="56" Margin="107,41,0,0" VerticalAlignment="Top" Width="175"/>
         <Label Content="Type:" HorizontalAlignment="Left" Margin="17,102,0,0" VerticalAlignment="Top"/>

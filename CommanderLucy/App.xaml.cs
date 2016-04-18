@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using CommanderLucy.Services;
 using CommanderLucy.Views;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.Unity;
@@ -17,7 +18,7 @@ namespace CommanderLucy
             Container = new UnityContainer();
 
             //service registrations
-            //Container.RegisterType<IDatabaseService, DatabaseService>();
+            Container.RegisterType<IConfigService, ConfigService>();
 
             //registraions utils
             //only one instance from messenger can exists! (recipient problems..)
