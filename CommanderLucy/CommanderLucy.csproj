@@ -102,6 +102,8 @@
     <Compile Include="Messages\PluginViewClosedMsg.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Services\IConfigService.cs" />
+    <Compile Include="Services\ISpeechService.cs" />
+    <Compile Include="Services\SpeechService.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
     <Compile Include="ViewModels\Config\AddEditCommandViewModel.cs" />
     <Compile Include="ViewModels\PluginViewModel.cs" />

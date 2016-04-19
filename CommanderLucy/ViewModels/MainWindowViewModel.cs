@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using CommanderLucy.Commands;
 using CommanderLucy.Messages;
+using CommanderLucy.Services;
 using CommanderLucy.ViewModels.Base;
 using CommanderLucy.Views;
 using GalaSoft.MvvmLight.Messaging;
@@ -11,16 +12,21 @@ namespace CommanderLucy.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly IMessenger _messenger;
+        private readonly ISpeechService _speechService;
         private ICommand _openPluginManagerCommand;
         private PluginView _pluginManagerView;
         private ICommand _openConfigManagerCommand;
         private ConfigView _configManagerView;
 
-        public MainWindowViewModel(IMessenger messenger)
+        public MainWindowViewModel(IMessenger messenger, ISpeechService speechService)
         {
             _messenger = messenger;
+            _speechService = speechService;
             _messenger.Register<PluginViewClosedMsg>(this, OnPluginViewClosedMsg);
             _messenger.Register<ConfigViewClosedMsg>(this, OnConfigViewClosedMsg);
+
+            //TODO: start later..
+            _speechService.StartRecognizing();
         }
 
         #region Properties
