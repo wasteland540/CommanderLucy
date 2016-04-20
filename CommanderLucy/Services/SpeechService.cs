@@ -14,6 +14,7 @@ namespace CommanderLucy.Services
         private readonly SpeechRecognitionEngine _recognitionEngine;
         private readonly SpeechSynthesizer _synthesizer;
 
+        //TODO: ExceptionHandling, if ther is no audio device
         public SpeechService(IConfigService configService, IPluginService pluginService)
         {
             _pluginService = pluginService;
