@@ -98,11 +98,16 @@
     <Compile Include="Messages\DeleteCommandResponseMsg.cs" />
     <Compile Include="Messages\DeletePluginSecurityRequestMsg.cs" />
     <Compile Include="Messages\DeletePluginSecurityResponseMsg.cs" />
+    <Compile Include="Messages\MainWindowInitializedMsg.cs" />
     <Compile Include="Messages\OpenPluginManagerView.cs" />
+    <Compile Include="Messages\PluginAddedMsg.cs" />
+    <Compile Include="Messages\PluginDeletedMsg.cs" />
     <Compile Include="Messages\PluginViewClosedMsg.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Services\IConfigService.cs" />
+    <Compile Include="Services\IPluginService.cs" />
     <Compile Include="Services\ISpeechService.cs" />
+    <Compile Include="Services\PluginService.cs" />
     <Compile Include="Services\SpeechService.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
     <Compile Include="ViewModels\Config\AddEditCommandViewModel.cs" />

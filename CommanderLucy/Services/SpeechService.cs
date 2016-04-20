@@ -10,50 +10,85 @@ namespace CommanderLucy.Services
     public class SpeechService : ISpeechService
     {
         private readonly List<Command> _commands;
+        private readonly IPluginService _pluginService;
         private readonly SpeechRecognitionEngine _recognitionEngine;
+        private readonly SpeechSynthesizer _synthesizer;
 
-        public SpeechService(IConfigService configService)
+        public SpeechService(IConfigService configService, IPluginService pluginService)
         {
+            _pluginService = pluginService;
             _recognitionEngine = new SpeechRecognitionEngine();
+            _recognitionEngine.SetInputToDefaultAudioDevice();
+
+            _synthesizer = new SpeechSynthesizer();
+            _synthesizer.SelectVoice("Microsoft Zira Desktop"); //english
+
+            //TODO: register config changed msg?!
             _commands = configService.LoadConfig();
         }
 
         public void StartRecognizing()
         {
-            //TODO: only 'commander lucy' in choices, if rec then add commands!
+            // Create a grammar
+            var choices = new Choices();
+            choices.Add(new[] {"Commander"});
+
+            LoadGrammar(choices);
+
+            // Register a handler for the SpeechRecognized event.
+            _recognitionEngine.SpeechRecognized += LucyRecognized;
+
+            _synthesizer.Speak("Commander Lucy expects your commands.");
+
+            _recognitionEngine.RecognizeAsync(RecognizeMode.Multiple);
+        }
+
+        private void LoadGrammar(Choices choices)
+        {
+            // Create a GrammarBuilder object and append the Choices object.
+            var gb = new GrammarBuilder();
+            gb.Append(choices);
+
+            // Create the Grammar instance and load it into the speech recognition engine.
+            var g = new Grammar(gb);
+            _recognitionEngine.LoadGrammar(g);
+        }
+
+        private void LucyRecognized(object sender, SpeechRecognizedEventArgs e)
+        {
+            _recognitionEngine.SpeechRecognized -= LucyRecognized;
+            _synthesizer.Speak("What can i do for you?");
 
             // Create a grammar
             var commandChoices = new Choices();
             commandChoices.Add(_commands.Select(c => c.CommandText).ToArray());
 
-            // Create a GrammarBuilder object and append the Choices object.
-            var gb = new GrammarBuilder();
-            gb.Append(commandChoices);
-
-            // Create the Grammar instance and load it into the speech recognition engine.
-            var g = new Grammar(gb);
-            _recognitionEngine.LoadGrammar(g);
+            LoadGrammar(commandChoices);
 
             // Register a handler for the SpeechRecognized event.
-            _recognitionEngine.SpeechRecognized += sre_SpeechRecognized;
-
-            _recognitionEngine.SetInputToDefaultAudioDevice();
-
-            var synthesizer = new SpeechSynthesizer();
-            synthesizer.SelectVoice("Microsoft Zira Desktop"); //english
-            synthesizer.Speak("Commander Lucy expects your commands.");
-
-            _recognitionEngine.RecognizeAsync(RecognizeMode.Multiple);
+            _recognitionEngine.SpeechRecognized += CommandRecognized;
         }
 
-        private void sre_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        private void CommandRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            var command = _commands.FirstOrDefault(c => c.CommandText == e.Result.Text);
+            _recognitionEngine.SpeechRecognized -= CommandRecognized;
+
+            Command command = _commands.FirstOrDefault(c => c.CommandText == e.Result.Text);
 
             if (command != null)
             {
-                Process.Start(command.Action);
+                if (command.Type == CommandType.Basic)
+                {
+                    Process.Start(command.Action);
+                }
+                else
+                {
+                    _pluginService.ExecutePlugin(command.Action, command.Parameters);
+                }
             }
+
+            // Register a handler for the SpeechRecognized event.
+            _recognitionEngine.SpeechRecognized += LucyRecognized;
         }
     }
 }

@@ -20,6 +20,7 @@ namespace CommanderLucy
             //service registrations
             Container.RegisterType<IConfigService, ConfigService>();
             Container.RegisterType<ISpeechService, SpeechService>();
+            Container.RegisterType<IPluginService, PluginService>();
 
             //registraions utils
             //only one instance from messenger can exists! (recipient problems..)

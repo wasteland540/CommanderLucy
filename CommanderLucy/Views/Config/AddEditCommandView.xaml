@@ -20,7 +20,7 @@
 
         <converters:PluginParameterStringConverter x:Key="PluginParameterStringConverter" />
 
-        <DataTemplate x:Key="BasicTemplate">
+        <DataTemplate x:Key="BasicTemplate" DataType="model:Command">
             <StackPanel Background="White">
                 <StackPanel Orientation="Horizontal">
                     <TextBox Text="{Binding Action}" Height="23" Width="175"/>
@@ -30,9 +30,8 @@
 
         <DataTemplate x:Key="PluginTemplate" DataType="model:Command">
             <StackPanel Orientation="Vertical" Background="White" >
-                <ComboBox >
-
-                </ComboBox>
+                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                    AncestorType={x:Type Window}}, Path=DataContext.Plugins}" SelectedItem="{Binding Action}" />
                 <Label Content="Parameters:" />
                 <TextBox Text="{Binding Parameters, Converter={StaticResource PluginParameterStringConverter}}" Height="23"/>
             </StackPanel>

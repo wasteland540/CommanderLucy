@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using CommanderLucy.Commands;
 using CommanderLucy.Messages;
+using CommanderLucy.Services;
 using CommanderLucy.ViewModels.Base;
 using GalaSoft.MvvmLight.Messaging;
 
@@ -12,9 +10,8 @@ namespace CommanderLucy.ViewModels
 {
     public class PluginViewModel : ViewModelBase
     {
-        private const string PluginFolderName = "Plugins";
-        private const string PluginExtension = ".dll";
         private readonly IMessenger _messenger;
+        private readonly IPluginService _pluginService;
         private ICommand _addPluginCommand;
         private ICommand _chooseFileCommand;
         private ICommand _deletePluginCommand;
@@ -22,11 +19,14 @@ namespace CommanderLucy.ViewModels
         private string _pluginPath;
         private string _selectedPlugin;
 
-        public PluginViewModel(IMessenger messenger)
+        public PluginViewModel(IMessenger messenger, IPluginService pluginService)
         {
             _messenger = messenger;
+            _pluginService = pluginService;
             _messenger.Register<ChoosePluginFileResponseMsg>(this, OnChoosePluginFileResponseMsg);
             _messenger.Register<DeletePluginSecurityResponseMsg>(this, OnDeletePluginSecurityResponseMsg);
+            _messenger.Register<PluginAddedMsg>(this, OnPluginAddedMsg);
+            _messenger.Register<PluginDeletedMsg>(this, OnPluginDeletedMsg);
         }
 
         #region Properties
@@ -70,16 +70,7 @@ namespace CommanderLucy.ViewModels
 
         public List<string> PluginList
         {
-            get
-            {
-                return _pluginList ??
-                       (_pluginList =
-                           Directory.GetFiles(PluginFolderName)
-                               // ReSharper disable once PossibleNullReferenceException
-                               // ReSharper disable once AssignNullToNotNullAttribute
-                               .Select(n => Path.GetFileName(n).Replace(Path.GetExtension(n), ""))
-                               .ToList());
-            }
+            get { return _pluginList ?? (_pluginList = _pluginService.GetPluginList()); }
             set
             {
                 _pluginList = value;
@@ -115,33 +106,19 @@ namespace CommanderLucy.ViewModels
         {
             if (!string.IsNullOrEmpty(_pluginPath))
             {
-                if (!Directory.Exists(PluginFolderName))
-                {
-                    Directory.CreateDirectory(PluginFolderName);
-                }
-
-                try
-                {
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    File.Copy(_pluginPath, Path.Combine(PluginFolderName, Path.GetFileName(_pluginPath)));
-
-                    ReloadPluginList();
-                    PluginPath = string.Empty;
-                }
-                catch (Exception e)
-                {
-                    _messenger.Send(new CannotAddPluginMsg(e.Message));
-                }
+                _pluginService.AddPlugin(_pluginPath);
             }
+        }
+
+        private void OnPluginAddedMsg(PluginAddedMsg msg)
+        {
+            ReloadPluginList();
+            PluginPath = string.Empty;
         }
 
         private void ReloadPluginList()
         {
-            PluginList =
-                Directory.GetFiles(PluginFolderName)
-                    // ReSharper disable once PossibleNullReferenceException
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    .Select(n => Path.GetFileName(n).Replace(Path.GetExtension(n), "")).ToList();
+            PluginList = _pluginService.GetPluginList();
         }
 
         private void OnChoosePluginFileResponseMsg(ChoosePluginFileResponseMsg msg)
@@ -156,16 +133,13 @@ namespace CommanderLucy.ViewModels
         {
             if (msg.IsSure)
             {
-                if (Directory.Exists(PluginFolderName) && !string.IsNullOrEmpty(_selectedPlugin))
-                {
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    string filePath = Path.Combine(PluginFolderName, Path.GetFileName(_selectedPlugin)) +
-                                      PluginExtension;
-                    File.Delete(filePath);
-
-                    ReloadPluginList();
-                }
+                _pluginService.DeletePlugin(_selectedPlugin);
             }
+        }
+
+        private void OnPluginDeletedMsg(PluginDeletedMsg msg)
+        {
+            ReloadPluginList();
         }
 
         #endregion Private Methods

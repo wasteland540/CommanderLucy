@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Windows.Input;
 using CommanderLucy.Commands;
 using CommanderLucy.Messages;
 using CommanderLucy.Model;
@@ -12,14 +13,19 @@ namespace CommanderLucy.ViewModels.Config
     {
         private readonly IConfigService _configService;
         private readonly IMessenger _messenger;
+        private readonly IPluginService _pluginService;
         private Command _currentCommand;
+        private List<string> _plugins;
         private ICommand _saveCommand;
         private string _title;
 
-        public AddEditCommandViewModel(IMessenger messenger, IConfigService configService)
+        public AddEditCommandViewModel(IMessenger messenger, IConfigService configService, IPluginService pluginService)
         {
             _messenger = messenger;
             _configService = configService;
+            _pluginService = pluginService;
+
+            //TODO: register plugin msg?
         }
 
         #region Properties
@@ -54,6 +60,21 @@ namespace CommanderLucy.ViewModels.Config
             {
                 _saveCommand = _saveCommand ?? new DelegateCommand(Save);
                 return _saveCommand;
+            }
+        }
+
+        public List<string> Plugins
+        {
+            get
+            {
+                return _plugins ??
+                       (_plugins = _pluginService.GetPluginList());
+            }
+
+            set
+            {
+                _plugins = value;
+                RaisePropertyChanged(() => Plugins);
             }
         }
 

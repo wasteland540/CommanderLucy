@@ -13,10 +13,10 @@ namespace CommanderLucy.ViewModels
     {
         private readonly IMessenger _messenger;
         private readonly ISpeechService _speechService;
+        private ConfigView _configManagerView;
+        private ICommand _openConfigManagerCommand;
         private ICommand _openPluginManagerCommand;
         private PluginView _pluginManagerView;
-        private ICommand _openConfigManagerCommand;
-        private ConfigView _configManagerView;
 
         public MainWindowViewModel(IMessenger messenger, ISpeechService speechService)
         {
@@ -24,9 +24,7 @@ namespace CommanderLucy.ViewModels
             _speechService = speechService;
             _messenger.Register<PluginViewClosedMsg>(this, OnPluginViewClosedMsg);
             _messenger.Register<ConfigViewClosedMsg>(this, OnConfigViewClosedMsg);
-
-            //TODO: start later..
-            _speechService.StartRecognizing();
+            _messenger.Register<MainWindowInitializedMsg>(this, OnMainWindowInitializedMsg);
         }
 
         #region Properties
@@ -79,6 +77,11 @@ namespace CommanderLucy.ViewModels
         private void OnConfigViewClosedMsg(ConfigViewClosedMsg msg)
         {
             _configManagerView = null;
+        }
+
+        private void OnMainWindowInitializedMsg(MainWindowInitializedMsg msg)
+        {
+            _speechService.StartRecognizing();
         }
 
         #endregion Private Methods
