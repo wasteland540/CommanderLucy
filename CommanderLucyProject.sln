@@ -12,6 +12,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCommanderPlugin", "Test
 		{68100EC2-2348-4B52-8FD1-3930BA1B60E0} = {68100EC2-2348-4B52-8FD1-3930BA1B60E0}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C66C4DAD-9231-4F3B-8CA4-B6FD1882E2A4}"
+	ProjectSection(SolutionItems) = preProject
+		Screenshots\BasicCommand.png = Screenshots\BasicCommand.png
+		Screenshots\ConfigManager.png = Screenshots\ConfigManager.png
+		Screenshots\MainWindow.png = Screenshots\MainWindow.png
+		Screenshots\PluginCommand.png = Screenshots\PluginCommand.png
+		Screenshots\PluginManager.png = Screenshots\PluginManager.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
