@@ -7,11 +7,15 @@ You also can write your own plugins!
 
 #### Screenshots
 
-![Main Window](https://github.com/wasteland540/CommanderLucy/tree/master/Screenshots/MainWindow.png) 
-![Config Manager](https://github.com/wasteland540/CommanderLucy/tree/master/Screenshots/ConfigManager.png) 
-![Basic Command](https://github.com/wasteland540/CommanderLucy/tree/master/Screenshots/BasicCommand.png) 
-![Plugin Command](https://github.com/wasteland540/CommanderLucy/tree/master/Screenshots/PluginCommand.png) 
-![Plugin Manager](https://github.com/wasteland540/CommanderLucy/tree/master/Screenshots/PluginManager.png) 
+![Main Window](https://github.com/wasteland540/CommanderLucy/blob/master/MainWindow.png) 
+
+![Config Manager](https://github.com/wasteland540/CommanderLucy/blob/master/ConfigManager.png) 
+
+![Basic Command](https://github.com/wasteland540/CommanderLucy/blob/master/BasicCommand.png) 
+
+![Plugin Command](https://github.com/wasteland540/CommanderLucy/blob/master/PluginCommand.png) 
+
+![Plugin Manager](https://github.com/wasteland540/CommanderLucy/blob/master/PluginManager.png) 
 
 #### Plugins
 If you want to write your own plugin, just do it. All you need is to implement the following interface.
